@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  includeStaticBlogExtra,
   isProductDocSlug,
   isSelfCanonical,
   isSitemapArticle,
@@ -86,4 +87,13 @@ test("sitemap includes published self-canonical posts and skips product-docs", (
   assert.doesNotMatch(xml, /draft-only/);
   assert.match(xml, /\/product</);
   assert.equal(isSitemapArticle({ status: "published", slug: "new-ops-playbook", kind: "article" }), true);
+});
+
+test("static blog extras do not reintroduce aliases or product-docs", () => {
+  assert.equal(includeStaticBlogExtra("listing-management-raci", true), true);
+  assert.equal(includeStaticBlogExtra("listing-management-raci", false), false);
+  assert.equal(includeStaticBlogExtra("what-is-business-listing-management", false), false);
+  assert.equal(includeStaticBlogExtra("business-listing-management-pricing-2026", false), false);
+  assert.equal(includeStaticBlogExtra("blm-before-you-adopt", true), false);
+  assert.equal(includeStaticBlogExtra("blm-before-you-adopt", false), false);
 });

@@ -59,3 +59,19 @@ export function isSitemapArticle(input: {
   if (NOINDEX_BLOG_SLUGS.has(input.slug)) return false;
   return isSelfCanonical(input.canonical_url, input.kind, input.slug);
 }
+
+/**
+ * Static library posts have no `canonical_url`. Blank counts as self inside
+ * `isSitemapArticle`, which would put renamed alias slugs back on `/blog`.
+ * Pass `knownSelfCanonical` only for the restored editorial set. Product-docs
+ * stay off the hub even if that flag is set.
+ */
+export function includeStaticBlogExtra(slug: string, knownSelfCanonical: boolean): boolean {
+  if (isProductDocSlug(slug)) return false;
+  return isSitemapArticle({
+    status: "published",
+    slug,
+    kind: "article",
+    canonical_url: knownSelfCanonical ? "" : `${SITE.domain}/product`,
+  });
+}

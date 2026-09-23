@@ -4,7 +4,11 @@ import { InnerPage } from "@/components/layout/inner-page";
 import { loadPublicSite, toCard } from "@/lib/cms/public";
 import { BLOG_POSTS } from "@/lib/content/blog";
 import { pageHead, breadcrumbJsonLd } from "@/lib/seo";
+import { includeStaticBlogExtra, isSitemapArticle } from "@/lib/seo-publish";
+import { FALLBACK_EDITORIAL_SLUGS } from "@/lib/sitemap";
 import { JsonLd } from "@/components/json-ld";
+
+const STATIC_EDITORIAL = new Set<string>(FALLBACK_EDITORIAL_SLUGS);
 
 export const Route = createFileRoute("/blog/")({
   loader: () => loadPublicSite(),
@@ -20,10 +24,14 @@ export const Route = createFileRoute("/blog/")({
 
 function BlogIndex() {
   const data = Route.useLoaderData();
-  // CMS rows win per slug; static library fills gaps (new cluster posts before desk seed).
-  const cmsPosts = data.articles.filter((a) => a.status === "published").map(toCard);
+  // Hub cards match sitemap inclusion. CMS rows with an off-self canonical
+  // (product-docs and aliases) drop out. Static extras have no canonical_url;
+  // only restored self-canonical editorials may fill a gap.
+  const cmsPosts = data.articles.filter((a) => isSitemapArticle(a)).map(toCard);
   const have = new Set(cmsPosts.map((p) => p.slug));
-  const staticExtra = BLOG_POSTS.filter((p) => !have.has(p.slug)).map(toCard);
+  const staticExtra = BLOG_POSTS.filter(
+    (p) => !have.has(p.slug) && includeStaticBlogExtra(p.slug, STATIC_EDITORIAL.has(p.slug)),
+  ).map(toCard);
   const posts = [...cmsPosts, ...staticExtra].sort((a, b) => b.date.localeCompare(a.date));
 
   return (

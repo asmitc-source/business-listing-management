@@ -25,13 +25,15 @@ export function shareMeta(opts: {
   title: string;
   description: string;
   path?: string;
+  /** Absolute share URL. When set, og:url uses this instead of path. */
+  url?: string;
   image?: string;
   /** Defaults to website; blog posts should pass "article". */
   type?: string;
   imageAlt?: string;
 }) {
   const origin = publicOrigin();
-  const url = opts.path ? `${origin}${opts.path}` : origin;
+  const url = (opts.url || "").trim() || (opts.path ? `${origin}${opts.path}` : origin);
   const image = opts.image ?? defaultShareImage(origin);
   const title = pageTitle(opts.title);
   const imageAlt = (opts.imageAlt || "").trim() || `${SITE.name}: ${SITE.tagline}`;
@@ -66,8 +68,9 @@ export function pageHead(opts: {
   imageAlt?: string;
 }) {
   const description = (opts.description || "").trim();
+  const canonicalOverride = (opts.canonical || "").trim();
   const canonical =
-    (opts.canonical || "").trim() ||
+    canonicalOverride ||
     (opts.path ? `${SITE.domain}${opts.path}` : "");
   const image = opts.image || defaultShareImage();
   const robots = opts.robots || deploymentRobotsMeta();
@@ -76,7 +79,7 @@ export function pageHead(opts: {
       { title: pageTitle(opts.title) },
       { name: "description", content: description },
       ...(robots ? [{ name: "robots", content: robots }] : []),
-      ...shareMeta({ ...opts, image }),
+      ...shareMeta({ ...opts, image, url: canonicalOverride || undefined }),
     ],
     links: [
       { rel: "image_src", href: image },
