@@ -14,6 +14,7 @@ export const Route = createFileRoute("/compare/uberall-alternative")({
         "BLM as an Uberall alternative when listing hygiene is the job. Equal-weakness notes, dated Uberall primary sources, and where Uberall still wins for US teams.",
       path: "/compare/uberall-alternative",
       robots: NOINDEX_FOLLOW,
+      published: "2026-09-06",
     }),
   component: UberallPage,
 });

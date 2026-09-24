@@ -26,24 +26,51 @@ export function isIndexableMarketingHost(host: string | null | undefined): boole
   return h === PRODUCTION_HOST || h === "localhost" || h === "127.0.0.1";
 }
 
+const PRIVATE_PATHS = [
+  "/app",
+  "/login",
+  "/signup",
+  "/demo",
+  "/trial",
+  "/unsubscribe",
+  "/admin",
+] as const;
+
+/**
+ * Retrieval crawlers that should read the public marketing site.
+ * Mixed-purpose tokens (Google-Extended, Applebot-Extended) stay allowed;
+ * blocking them would also drop retrieval.
+ */
+const AI_RETRIEVAL_AGENTS = [
+  "GPTBot",
+  "OAI-SearchBot",
+  "ChatGPT-User",
+  "ClaudeBot",
+  "Claude-SearchBot",
+  "PerplexityBot",
+  "Google-Extended",
+  "Applebot-Extended",
+  "Bingbot",
+] as const;
+
+function robotsAllowGroup(agent: string): string[] {
+  return [
+    `User-agent: ${agent}`,
+    "Allow: /",
+    ...PRIVATE_PATHS.map((path) => `Disallow: ${path}`),
+    "",
+  ];
+}
+
 export function robotsTxtForHost(host: string | null | undefined): string {
   if (!isIndexableMarketingHost(host)) {
     return ["User-agent: *", "Disallow: /", ""].join("\n");
   }
-  return [
-    "User-agent: *",
-    "Allow: /",
-    "Disallow: /app",
-    "Disallow: /login",
-    "Disallow: /signup",
-    "Disallow: /demo",
-    "Disallow: /trial",
-    "Disallow: /unsubscribe",
-    "Disallow: /admin",
-    "",
-    `Sitemap: ${PRODUCTION_ORIGIN}/sitemap.xml`,
-    "",
-  ].join("\n");
+  const groups = [robotsAllowGroup("*")];
+  if (normalizeHost(host) === PRODUCTION_HOST) {
+    for (const agent of AI_RETRIEVAL_AGENTS) groups.push(robotsAllowGroup(agent));
+  }
+  return [...groups.flat(), `Sitemap: ${PRODUCTION_ORIGIN}/sitemap.xml`, ""].join("\n");
 }
 
 /**

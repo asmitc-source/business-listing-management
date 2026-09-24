@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteShell } from "@/components/layout/site-shell";
 import { HomePage } from "@/components/home/home-page";
-import { pageHead } from "@/lib/seo";
+import { pageHead, pageShareImage } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 import { loadPublicSite } from "@/lib/cms/public";
 
@@ -9,9 +9,10 @@ export const Route = createFileRoute("/")({
   loader: () => loadPublicSite(),
   head: () =>
     pageHead({
-      title: "Business Listing Management Software for Multi-Location Teams",
+      title: "Business Listing Management for Multi-Location Teams",
       description: SITE.description,
       path: "/",
+      ...pageShareImage("/"),
     }),
   component: Home,
 });

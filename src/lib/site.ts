@@ -9,7 +9,7 @@ export const SITE = {
   oneLiner: `Keep every location accurate across ${COVERAGE}, from one place.`,
   tagline: "Keep every location accurate without the spreadsheet.",
   description:
-    "Business listing management software that keeps NAP, hours, categories, and duplicates accurate across Google, Apple, Bing, and key directories.",
+    "Business listing management software that keeps NAP, hours, categories, and duplicates accurate across Google, Apple, Bing, and key directories for teams.",
   email: "hello@businesslistingmanagement.com",
   salesEmail: "sales@businesslistingmanagement.com",
   author: "Asmit Choudhary",

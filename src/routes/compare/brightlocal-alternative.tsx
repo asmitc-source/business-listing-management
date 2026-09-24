@@ -14,6 +14,7 @@ export const Route = createFileRoute("/compare/brightlocal-alternative")({
         "BLM as a BrightLocal alternative when listing ops matter more than rank grids. Equal-weakness notes and dated BrightLocal primary sources for US teams.",
       path: "/compare/brightlocal-alternative",
       robots: NOINDEX_FOLLOW,
+      published: "2026-09-06",
     }),
   component: BrightPage,
 });

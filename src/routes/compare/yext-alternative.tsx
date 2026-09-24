@@ -14,6 +14,7 @@ export const Route = createFileRoute("/compare/yext-alternative")({
         "BLM as a Yext alternative when listing health is the job. Equal-weakness notes, dated Yext primary sources, and where Yext still wins for US teams.",
       path: "/compare/yext-alternative",
       robots: NOINDEX_FOLLOW,
+      published: "2026-09-06",
     }),
   component: YextPage,
 });

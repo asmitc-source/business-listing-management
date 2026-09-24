@@ -14,6 +14,7 @@ export const Route = createFileRoute("/compare/birdeye-alternative")({
         "BLM as a Birdeye alternative when listing health is the job. Equal-weakness notes, dated Birdeye primary sources, and where Birdeye still wins for US teams.",
       path: "/compare/birdeye-alternative",
       robots: NOINDEX_FOLLOW,
+      published: "2026-09-06",
     }),
   component: BirdeyePage,
 });

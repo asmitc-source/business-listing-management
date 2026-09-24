@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/layout/site-shell";
 import { InnerPage } from "@/components/layout/inner-page";
-import { loadPublicSite, toCard } from "@/lib/cms/public";
+import { visibleBlogHubCards } from "@/lib/blog-hub";
+import { loadPublicSite } from "@/lib/cms/public";
 import { BLOG_POSTS } from "@/lib/content/blog";
-import { pageHead, breadcrumbJsonLd } from "@/lib/seo";
-import { includeStaticBlogExtra, isSitemapArticle } from "@/lib/seo-publish";
+import { pageHead, pageShareImage, blogCollectionJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { FALLBACK_EDITORIAL_SLUGS } from "@/lib/sitemap";
 import { JsonLd } from "@/components/json-ld";
 
@@ -14,10 +14,11 @@ export const Route = createFileRoute("/blog/")({
   loader: () => loadPublicSite(),
   head: () =>
     pageHead({
-      title: "Business listing management blog",
+      title: "Business listing management blog: NAP and duplicates",
       description:
-        "Business listing management blog from BLM: guides covering NAP, duplicates, Google Business Profile, cost, and agency operations.",
+        "Business listing management blog from BLM: guides covering NAP, governance, QA, migration, duplicates, Google Business Profile, cost, and agency operations.",
       path: "/blog",
+      ...pageShareImage("/blog"),
     }),
   component: BlogIndex,
 });
@@ -27,12 +28,7 @@ function BlogIndex() {
   // Hub cards match sitemap inclusion. CMS rows with an off-self canonical
   // (product-docs and aliases) drop out. Static extras have no canonical_url;
   // only restored self-canonical editorials may fill a gap.
-  const cmsPosts = data.articles.filter((a) => isSitemapArticle(a)).map(toCard);
-  const have = new Set(cmsPosts.map((p) => p.slug));
-  const staticExtra = BLOG_POSTS.filter(
-    (p) => !have.has(p.slug) && includeStaticBlogExtra(p.slug, STATIC_EDITORIAL.has(p.slug)),
-  ).map(toCard);
-  const posts = [...cmsPosts, ...staticExtra].sort((a, b) => b.date.localeCompare(a.date));
+  const posts = visibleBlogHubCards(data.articles, BLOG_POSTS, STATIC_EDITORIAL);
 
   return (
     <SiteShell>
@@ -42,6 +38,7 @@ function BlogIndex() {
           { name: "Blog", path: "/blog" },
         ])}
       />
+      <JsonLd data={blogCollectionJsonLd(posts)} />
       <InnerPage
         eyebrow="Blog"
         title="Listing operations, written in complete sentences."

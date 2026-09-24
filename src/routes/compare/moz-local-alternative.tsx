@@ -14,6 +14,7 @@ export const Route = createFileRoute("/compare/moz-local-alternative")({
         "BLM as a Moz Local alternative when listing health is the job. Equal-weakness notes, dated Moz Local primary sources, and where Moz Local still wins for US teams.",
       path: "/compare/moz-local-alternative",
       robots: NOINDEX_FOLLOW,
+      published: "2026-09-06",
     }),
   component: MozLocalPage,
 });
