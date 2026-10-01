@@ -234,7 +234,7 @@ test("home and blog titles and metas sit in the house length band", () => {
   assert.equal(raci?.description.length, 152);
 });
 
-test("seven pages use 1200x630 Gohan cards; other pages keep the 1280x640 banner", () => {
+test("eight pages use 1200x630 Gohan cards; other pages keep the 1280x640 banner", () => {
   const paths = Object.keys(PAGE_OG_BY_PATH);
   assert.deepEqual(paths, [
     "/",
@@ -244,6 +244,7 @@ test("seven pages use 1200x630 Gohan cards; other pages keep the 1280x640 banner
     "/blog/listing-change-qa-evidence",
     "/blog/location-open-move-close-playbook",
     "/blog/how-to-do-google-business-listing-management-at-scale",
+    "/blog/business-listing-management-vendor-proof",
   ]);
 
   for (const path of paths) {

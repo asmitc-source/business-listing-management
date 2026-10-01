@@ -17,6 +17,7 @@ export const PAGE_OG_BY_PATH: Record<string, string> = {
   "/blog/location-open-move-close-playbook": "/og/location-open-move-close-playbook.png",
   "/blog/how-to-do-google-business-listing-management-at-scale":
     "/og/how-to-do-google-business-listing-management-at-scale.png",
+  "/blog/business-listing-management-vendor-proof": "/og/business-listing-management-vendor-proof.png",
 };
 
 export function pageShareImage(path: string | undefined | null):
