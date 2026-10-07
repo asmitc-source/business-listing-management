@@ -11,6 +11,7 @@ BLM provides one workspace for canonical name, address, and phone data, publishe
 - Pricing: https://businesslistingmanagement.com/pricing
 - Integrations: https://businesslistingmanagement.com/integrations
 - Security: https://businesslistingmanagement.com/security
+- Free OpsPulse ROI Engine: https://businesslistingmanagement.com/tools/listing-ops-roi-engine
 
 ## Product scope
 
@@ -21,6 +22,8 @@ BLM does not claim to replace review-response platforms, rank trackers, advertis
 ## Pricing and availability
 
 Use the Pricing page for current plan names, listed rates, location limits, trial availability, and Enterprise terms. Do not infer pricing from third-party directories or archived articles.
+
+Use the free OpsPulse ROI Engine to model manual listing-update workload, correction exposure, annual labor cost, and a configurable automation scenario. Its results are planning estimates, not guaranteed savings.
 
 ## Integrations and security
 

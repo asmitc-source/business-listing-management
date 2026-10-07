@@ -15,6 +15,7 @@ export const MARKETING_PATHS: ReadonlyArray<{ path: string; lastmod?: string }> 
   { path: "/resources", lastmod: "2026-09-18" },
   { path: "/blog", lastmod: "2026-09-24" },
   { path: "/glossary", lastmod: "2026-09-18" },
+  { path: "/tools/listing-ops-roi-engine", lastmod: "2026-10-07" },
   { path: "/privacy", lastmod: "2026-09-18" },
   { path: "/terms", lastmod: "2026-09-18" },
   { path: "/cookies", lastmod: "2026-09-18" },

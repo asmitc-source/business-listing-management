@@ -47,6 +47,7 @@ export function HomePage({ copy }: { copy?: HomeCopy }) {
       />
       <Hero />
       <QuickAnswer />
+      <OpsPulsePromo />
       <LockIn />
       <ProductProof />
       <Workflow />
@@ -59,6 +60,10 @@ export function HomePage({ copy }: { copy?: HomeCopy }) {
     </main>
     </CopyCtx.Provider>
   );
+}
+
+function OpsPulsePromo() {
+  return <section className="page-wrap pb-12 sm:pb-16" aria-labelledby="opspulse-promo-title"><div className="grid overflow-hidden rounded-[2rem] bg-ink text-cream shadow-[var(--shadow-soft)] lg:grid-cols-[1fr_.62fr]"><div className="p-6 sm:p-10"><p className="text-xs font-semibold uppercase tracking-[.16em] text-brand-soft">Free interactive ROI engine</p><h2 id="opspulse-promo-title" className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-[1] text-white sm:text-5xl">Find the operating cost hiding behind listing updates.</h2><p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-white/65">OpsPulse turns locations, publisher touches, correction rates, and exception work into a live annual workload and cost model. No signup. No spreadsheet.</p><Link to="/tools/listing-ops-roi-engine" className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-full bg-brand px-5 text-sm font-semibold text-brand-fg">Run OpsPulse <ArrowRight className="size-4" /></Link></div><div className="border-t border-white/15 bg-brand p-6 text-brand-fg sm:p-10 lg:border-l lg:border-t-0"><p className="text-xs font-semibold uppercase tracking-[.15em] opacity-70">Model output</p><strong className="mt-8 block text-7xl leading-none tracking-[-.07em]">4×</strong><span className="mt-2 block text-sm font-semibold">operating views</span><ul className="mt-8 space-y-3 border-t border-current/20 pt-6 text-sm font-semibold"><li>Workload and FTE load</li><li>Manual operating cost</li><li>Correction exposure</li><li>Prioritized control plan</li></ul></div></div></section>;
 }
 
 function Hero() {

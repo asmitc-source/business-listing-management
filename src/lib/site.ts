@@ -21,6 +21,7 @@ export const NAV = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/pricing", label: "Pricing" },
   { href: "/compare", label: "Compare" },
+  { href: "/tools/listing-ops-roi-engine", label: "Free ROI tool" },
   { href: "/blog", label: "Blog" },
   { href: "/resources", label: "Resources" },
 ] as const;
@@ -44,6 +45,7 @@ export const FOOTER = {
     { href: "/book", label: "Book a call" },
   ],
   resources: [
+    { href: "/tools/listing-ops-roi-engine", label: "OpsPulse ROI engine" },
     { href: "/resources", label: "Resource hub" },
     { href: "/blog", label: "Blog" },
     { href: "/glossary", label: "Glossary" },

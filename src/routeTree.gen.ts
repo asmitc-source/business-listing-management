@@ -28,6 +28,7 @@ import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrialRouteImport } from './routes/trial'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
@@ -45,6 +46,7 @@ import { Route as CompareBrightlocalAlternativeRouteImport } from './routes/comp
 import { Route as CompareMozLocalAlternativeRouteImport } from './routes/compare/moz-local-alternative'
 import { Route as CompareUberallAlternativeRouteImport } from './routes/compare/uberall-alternative'
 import { Route as CompareYextAlternativeRouteImport } from './routes/compare/yext-alternative'
+import { Route as ToolsListingOpsRoiEngineRouteImport } from './routes/tools/listing-ops-roi-engine'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -142,6 +144,11 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -231,6 +238,12 @@ const CompareYextAlternativeRoute = CompareYextAlternativeRouteImport.update({
   path: '/compare/yext-alternative',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsListingOpsRoiEngineRoute =
+  ToolsListingOpsRoiEngineRouteImport.update({
+    id: '/tools/listing-ops-roi-engine',
+    path: '/tools/listing-ops-roi-engine',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -257,6 +270,7 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/trial': typeof TrialRoute
   '/unsubscribe': typeof UnsubscribeRoute
@@ -271,6 +285,7 @@ export interface FileRoutesByFullPath {
   '/compare/moz-local-alternative': typeof CompareMozLocalAlternativeRoute
   '/compare/uberall-alternative': typeof CompareUberallAlternativeRoute
   '/compare/yext-alternative': typeof CompareYextAlternativeRoute
+  '/tools/listing-ops-roi-engine': typeof ToolsListingOpsRoiEngineRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/compare/': typeof CompareIndexRoute
@@ -296,6 +311,7 @@ export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/trial': typeof TrialRoute
   '/unsubscribe': typeof UnsubscribeRoute
@@ -310,6 +326,7 @@ export interface FileRoutesByTo {
   '/compare/moz-local-alternative': typeof CompareMozLocalAlternativeRoute
   '/compare/uberall-alternative': typeof CompareUberallAlternativeRoute
   '/compare/yext-alternative': typeof CompareYextAlternativeRoute
+  '/tools/listing-ops-roi-engine': typeof ToolsListingOpsRoiEngineRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/compare': typeof CompareIndexRoute
@@ -336,6 +353,7 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/trial': typeof TrialRoute
   '/unsubscribe': typeof UnsubscribeRoute
@@ -350,6 +368,7 @@ export interface FileRoutesById {
   '/compare/moz-local-alternative': typeof CompareMozLocalAlternativeRoute
   '/compare/uberall-alternative': typeof CompareUberallAlternativeRoute
   '/compare/yext-alternative': typeof CompareYextAlternativeRoute
+  '/tools/listing-ops-roi-engine': typeof ToolsListingOpsRoiEngineRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/compare/': typeof CompareIndexRoute
@@ -377,6 +396,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/security'
     | '/signup'
+    | '/sitemap.xml'
     | '/terms'
     | '/trial'
     | '/unsubscribe'
@@ -391,6 +411,7 @@ export interface FileRouteTypes {
     | '/compare/moz-local-alternative'
     | '/compare/uberall-alternative'
     | '/compare/yext-alternative'
+    | '/tools/listing-ops-roi-engine'
     | '/admin/'
     | '/blog/'
     | '/compare/'
@@ -416,6 +437,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/security'
     | '/signup'
+    | '/sitemap.xml'
     | '/terms'
     | '/trial'
     | '/unsubscribe'
@@ -430,6 +452,7 @@ export interface FileRouteTypes {
     | '/compare/moz-local-alternative'
     | '/compare/uberall-alternative'
     | '/compare/yext-alternative'
+    | '/tools/listing-ops-roi-engine'
     | '/admin'
     | '/blog'
     | '/compare'
@@ -455,6 +478,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/security'
     | '/signup'
+    | '/sitemap.xml'
     | '/terms'
     | '/trial'
     | '/unsubscribe'
@@ -469,6 +493,7 @@ export interface FileRouteTypes {
     | '/compare/moz-local-alternative'
     | '/compare/uberall-alternative'
     | '/compare/yext-alternative'
+    | '/tools/listing-ops-roi-engine'
     | '/admin/'
     | '/blog/'
     | '/compare/'
@@ -495,6 +520,7 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SecurityRoute: typeof SecurityRoute
   SignupRoute: typeof SignupRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   TrialRoute: typeof TrialRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
@@ -509,6 +535,7 @@ export interface RootRouteChildren {
   CompareMozLocalAlternativeRoute: typeof CompareMozLocalAlternativeRoute
   CompareUberallAlternativeRoute: typeof CompareUberallAlternativeRoute
   CompareYextAlternativeRoute: typeof CompareYextAlternativeRoute
+  ToolsListingOpsRoiEngineRoute: typeof ToolsListingOpsRoiEngineRoute
   AdminIndexRoute: typeof AdminIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CompareIndexRoute: typeof CompareIndexRoute
@@ -650,6 +677,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -769,6 +803,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompareYextAlternativeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/listing-ops-roi-engine': {
+      id: '/tools/listing-ops-roi-engine'
+      path: '/tools/listing-ops-roi-engine'
+      fullPath: '/tools/listing-ops-roi-engine'
+      preLoaderRoute: typeof ToolsListingOpsRoiEngineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -799,6 +840,7 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   SecurityRoute: SecurityRoute,
   SignupRoute: SignupRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   TrialRoute: TrialRoute,
   UnsubscribeRoute: UnsubscribeRoute,
@@ -813,6 +855,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompareMozLocalAlternativeRoute: CompareMozLocalAlternativeRoute,
   CompareUberallAlternativeRoute: CompareUberallAlternativeRoute,
   CompareYextAlternativeRoute: CompareYextAlternativeRoute,
+  ToolsListingOpsRoiEngineRoute: ToolsListingOpsRoiEngineRoute,
   AdminIndexRoute: AdminIndexRoute,
   BlogIndexRoute: BlogIndexRoute,
   CompareIndexRoute: CompareIndexRoute,
@@ -821,3 +864,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
