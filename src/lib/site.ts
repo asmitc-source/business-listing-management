@@ -21,7 +21,7 @@ export const NAV = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/pricing", label: "Pricing" },
   { href: "/compare", label: "Compare" },
-  { href: "/tools/listing-ops-roi-engine", label: "Free ROI tool" },
+  { href: "/tools/listing-ops-roi-engine", label: "OpsPulse" },
   { href: "/blog", label: "Blog" },
   { href: "/resources", label: "Resources" },
 ] as const;
