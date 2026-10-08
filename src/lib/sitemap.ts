@@ -3,22 +3,22 @@ import { isSitemapArticle, publicPathForKind } from "./seo-publish";
 
 /** Marketing URLs that stay in the sitemap. No product-doc blog URLs. */
 export const MARKETING_PATHS: ReadonlyArray<{ path: string; lastmod?: string }> = [
-  { path: "/", lastmod: "2026-09-23" },
+  { path: "/", lastmod: "2026-10-07" },
   { path: "/product", lastmod: "2026-09-23" },
-  { path: "/how-it-works", lastmod: "2026-09-18" },
-  { path: "/pricing", lastmod: "2026-09-18" },
-  { path: "/integrations", lastmod: "2026-09-18" },
-  { path: "/security", lastmod: "2026-09-18" },
+  { path: "/how-it-works", lastmod: "2026-09-23" },
+  { path: "/pricing", lastmod: "2026-09-23" },
+  { path: "/integrations", lastmod: "2026-09-23" },
+  { path: "/security", lastmod: "2026-09-23" },
   { path: "/about", lastmod: "2026-09-23" },
-  { path: "/contact", lastmod: "2026-09-18" },
+  { path: "/contact", lastmod: "2026-09-23" },
   { path: "/book", lastmod: "2026-09-23" },
-  { path: "/resources", lastmod: "2026-09-18" },
-  { path: "/blog", lastmod: "2026-09-24" },
-  { path: "/glossary", lastmod: "2026-09-18" },
+  { path: "/resources", lastmod: "2026-09-23" },
+  { path: "/blog", lastmod: "2026-09-23" },
+  { path: "/glossary", lastmod: "2026-09-23" },
   { path: "/tools/listing-ops-roi-engine", lastmod: "2026-10-07" },
-  { path: "/privacy", lastmod: "2026-09-18" },
-  { path: "/terms", lastmod: "2026-09-18" },
-  { path: "/cookies", lastmod: "2026-09-18" },
+  { path: "/privacy", lastmod: "2026-09-23" },
+  { path: "/terms", lastmod: "2026-09-23" },
+  { path: "/cookies", lastmod: "2026-09-23" },
 ];
 
 /** Known self-canonical editorials if CMS is unreachable. */
@@ -68,7 +68,7 @@ export function sitemapXml(opts: {
     add(`${origin}${row.path}`, row.lastmod || today);
   }
 
-  const articles = opts.articles.length
+  const articles: SitemapArticle[] = opts.articles.length
     ? opts.articles
     : FALLBACK_EDITORIAL_SLUGS.map((slug) => ({
         slug,
