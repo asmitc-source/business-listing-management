@@ -89,6 +89,32 @@ test("sitemap includes published self-canonical posts and skips product-docs", (
   assert.equal(isSitemapArticle({ status: "published", slug: "new-ops-playbook", kind: "article" }), true);
 });
 
+test("new editorials automatically refresh article-driven sitemap hubs", () => {
+  const xml = sitemapXml({
+    today: "2026-10-09",
+    marketing: [
+      { path: "/", lastmod: "2026-10-07" },
+      { path: "/resources", lastmod: "2026-09-23" },
+      { path: "/blog", lastmod: "2026-09-23" },
+      { path: "/pricing", lastmod: "2026-09-23" },
+    ],
+    articles: [
+      {
+        slug: "new-daily-article",
+        kind: "article",
+        status: "published",
+        canonical_url: "",
+        updated_at: "2026-10-09T06:30:00.000Z",
+      },
+    ],
+  });
+
+  assert.match(xml, /<loc>https:\/\/businesslistingmanagement\.com\/<\/loc><lastmod>2026-10-09<\/lastmod>/);
+  assert.match(xml, /<loc>https:\/\/businesslistingmanagement\.com\/resources<\/loc><lastmod>2026-10-09<\/lastmod>/);
+  assert.match(xml, /<loc>https:\/\/businesslistingmanagement\.com\/blog<\/loc><lastmod>2026-10-09<\/lastmod>/);
+  assert.match(xml, /<loc>https:\/\/businesslistingmanagement\.com\/pricing<\/loc><lastmod>2026-09-23<\/lastmod>/);
+});
+
 test("static blog extras do not reintroduce aliases or product-docs", () => {
   assert.equal(includeStaticBlogExtra("listing-management-raci", true), true);
   assert.equal(includeStaticBlogExtra("listing-management-raci", false), false);
