@@ -21,6 +21,9 @@ export const MARKETING_PATHS: ReadonlyArray<{ path: string; lastmod?: string }> 
   { path: "/cookies", lastmod: "2026-09-23" },
 ];
 
+/** These pages render the newest published editorials and change when a post is published. */
+const ARTICLE_DRIVEN_MARKETING_PATHS = new Set(["/", "/resources", "/blog"]);
+
 /** Known self-canonical editorials if CMS is unreachable. */
 export const FALLBACK_EDITORIAL_SLUGS = [
   "how-to-do-google-business-listing-management-at-scale",
@@ -48,6 +51,11 @@ function escapeXml(value: string): string {
     .replaceAll("'", "&apos;");
 }
 
+function dateOnly(value: string | undefined, fallback: string): string {
+  const candidate = String(value || fallback).slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(candidate) ? candidate : fallback;
+}
+
 export function sitemapXml(opts: {
   origin?: string;
   marketing?: ReadonlyArray<{ path: string; lastmod?: string }>;
@@ -64,10 +72,6 @@ export function sitemapXml(opts: {
     urls.push({ loc, lastmod });
   };
 
-  for (const row of opts.marketing ?? MARKETING_PATHS) {
-    add(`${origin}${row.path}`, row.lastmod || today);
-  }
-
   const articles: SitemapArticle[] = opts.articles.length
     ? opts.articles
     : FALLBACK_EDITORIAL_SLUGS.map((slug) => ({
@@ -78,11 +82,26 @@ export function sitemapXml(opts: {
         date: today,
       }));
 
+  // Only live CMS rows drive hub freshness. A temporary CMS failure must not
+  // make static fallback rows claim that the homepage and hubs changed today.
+  const newestPublishedLastmod = opts.articles
+    .filter(isSitemapArticle)
+    .map((article) => dateOnly(article.updated_at || article.date, today))
+    .reduce<string | undefined>((newest, lastmod) => (!newest || lastmod > newest ? lastmod : newest), undefined);
+
+  for (const row of opts.marketing ?? MARKETING_PATHS) {
+    const staticLastmod = dateOnly(row.lastmod, today);
+    const lastmod =
+      ARTICLE_DRIVEN_MARKETING_PATHS.has(row.path) && newestPublishedLastmod && newestPublishedLastmod > staticLastmod
+        ? newestPublishedLastmod
+        : staticLastmod;
+    add(`${origin}${row.path}`, lastmod);
+  }
+
   for (const article of articles) {
     if (!isSitemapArticle(article)) continue;
     const path = publicPathForKind(article.kind, article.slug);
-    const lastmod = String(article.updated_at || article.date || today).slice(0, 10);
-    add(`${origin}${path}`, /^\d{4}-\d{2}-\d{2}$/.test(lastmod) ? lastmod : today);
+    add(`${origin}${path}`, dateOnly(article.updated_at || article.date, today));
   }
 
   const body = urls
