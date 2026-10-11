@@ -123,3 +123,15 @@ test("static blog extras do not reintroduce aliases or product-docs", () => {
   assert.equal(includeStaticBlogExtra("blm-before-you-adopt", true), false);
   assert.equal(includeStaticBlogExtra("blm-before-you-adopt", false), false);
 });
+
+
+test("empty publisher inventory does not produce invented sitemap URLs", () => {
+  const xml = sitemapXml({
+    articles: [],
+    today: "2026-10-12",
+    marketing: [{ path: "/", lastmod: "2026-10-10" }],
+  });
+  assert.match(xml, /<loc>https:\/\/businesslistingmanagement\.com\/<\/loc>/);
+  assert.equal((xml.match(/<loc>/g) || []).length, 1);
+  assert.ok(!xml.includes("/blog/"), "No unverified fallback editorial URLs");
+});
