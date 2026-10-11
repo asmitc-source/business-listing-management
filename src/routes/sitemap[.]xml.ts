@@ -12,18 +12,26 @@ export const Route = createFileRoute("/sitemap.xml")({
             listPublished(),
             new Promise<null>((resolve) => setTimeout(() => resolve(null), 4_000)),
           ]);
-          if (rows) {
-            articles = rows.map((row) => ({
-              slug: row.slug,
-              kind: row.kind,
-              status: row.status,
-              canonical_url: row.canonical_url,
-              date: row.date,
-              updated_at: row.updated_at,
-            }));
-          }
+          if (!rows) throw new Error("Published article lookup timed out");
+          articles = rows.map((row) => ({
+            slug: row.slug,
+            kind: row.kind,
+            status: row.status,
+            canonical_url: row.canonical_url,
+            date: row.date,
+            updated_at: row.updated_at,
+          }));
         } catch {
-          articles = [];
+          // Never temporarily publish a truncated sitemap if the CMS is unavailable.
+          // Returning 503 asks crawlers to retry, preserving the last complete sitemap.
+          return new Response("Sitemap temporarily unavailable; please retry", {
+            status: 503,
+            headers: {
+              "Content-Type": "text/plain; charset=utf-8",
+              "Retry-After": "120",
+              "Cache-Control": "no-store",
+            },
+          });
         }
         const body = sitemapXml({ articles });
         return new Response(body, {
