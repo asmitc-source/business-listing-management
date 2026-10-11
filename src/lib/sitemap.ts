@@ -72,15 +72,8 @@ export function sitemapXml(opts: {
     urls.push({ loc, lastmod });
   };
 
-  const articles: SitemapArticle[] = opts.articles.length
-    ? opts.articles
-    : FALLBACK_EDITORIAL_SLUGS.map((slug) => ({
-        slug,
-        kind: "article",
-        status: "published",
-        canonical_url: "",
-        date: today,
-      }));
+  // URLs must come from actually published records; do not invent placeholder articles.
+  const articles: SitemapArticle[] = opts.articles;
 
   // Only live CMS rows drive hub freshness. A temporary CMS failure must not
   // make static fallback rows claim that the homepage and hubs changed today.
