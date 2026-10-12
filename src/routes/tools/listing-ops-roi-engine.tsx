@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
 import { OpsPulseRoiEngine } from "@/components/tools/opspulse-roi-engine";
+import { OpsPulseExplainer } from "@/components/tools/opspulse-explainer";
 import { JsonLd } from "@/components/json-ld";
 import { pageHead, breadcrumbJsonLd } from "@/lib/seo";
 import { SITE } from "@/lib/site";
@@ -9,7 +10,7 @@ import { SITE } from "@/lib/site";
 export const Route = createFileRoute("/tools/listing-ops-roi-engine")({
   head: () => pageHead({
     title: "Free Business Listing Management ROI Calculator",
-    description: "Calculate listing-management workload, correction exposure, manual operating cost and automation opportunity with the free OpsPulse ROI Engine.",
+    description: "Free listings ROI calculator for multi-location businesses: estimate manual listing costs, FTE workload, rework, exceptions and automation scenarios.",
     path: "/tools/listing-ops-roi-engine",
   }),
   component: OpsPulsePage,
@@ -23,7 +24,8 @@ function OpsPulsePage() {
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     url: `${SITE.domain}/tools/listing-ops-roi-engine`,
-    description: "A free browser-based calculator for business listing management workload, operating cost and automation scenarios.",
+    description: "Free browser-based ROI planning calculator for local listings workload, publisher updates, correction labor, FTE equivalent, and potential automation capacity.",
+    featureList: ["Annual publisher touches", "Manual listing update cost", "FTE-equivalent workload", "Rework and exception estimates", "Scenario-based labor opportunity"],
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   };
   return <SiteShell>
@@ -37,6 +39,7 @@ function OpsPulsePage() {
         </div>
       </section>
       <section id="calculator" className="page-wrap py-12 sm:py-16 lg:py-20"><OpsPulseRoiEngine /></section>
+      <OpsPulseExplainer />
     </main>
   </SiteShell>;
 }
