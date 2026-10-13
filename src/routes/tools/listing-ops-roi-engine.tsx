@@ -10,7 +10,7 @@ import { SITE } from "@/lib/site";
 export const Route = createFileRoute("/tools/listing-ops-roi-engine")({
   head: () => pageHead({
     title: "Free GMB Audit Tool: Checklist & ROI Planner | OpsPulse",
-    description: "Free GMB audit tool with a manual checklist and ROI planner. Use GMB audit findings to estimate listing correction costs, staff hours and automation scenarios.",
+    description: "Use our free GMB audit tool for manual checks and ROI planning. Turn GMB audit findings into estimates of listing correction costs and staff hours.",
     path: "/tools/listing-ops-roi-engine",
   }),
   component: OpsPulsePage,
