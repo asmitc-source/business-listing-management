@@ -35,7 +35,7 @@ test("Markdown mirrors never compete with canonical HTML and do not leak private
   assert.match(mirrorRoute, /getArticleBySlug\(slug, true\)/);
   assert.match(mirrorRoute, /isSitemapArticle\(article\)/);
   assert.match(mirrorRoute, /"X-Robots-Tag": "noindex, follow"/);
-  assert.match(mirrorRoute, /rel=\\?"canonical\\?"/);
+  assert.ok(mirrorRoute.includes('rel="canonical"'), "Mirrors must reference canonical HTML");
   assert.doesNotMatch(sitemap, /\.md.{0,40}add\(/);
 });
 
