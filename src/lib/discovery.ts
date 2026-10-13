@@ -71,7 +71,7 @@ export function llmsIndex(articles: readonly CmsArticle[]) {
   const rows = pages.map(article => [
     "### " + article.title,
     "- Canonical: " + articleUrl(article),
-    "- Markdown mirror: " + articleUrl(article) + ".md",
+    "- Markdown mirror: " + BASE + "/md/" + article.slug,
     "- Updated: " + (article.updated_at || article.date).slice(0, 10),
     "- Summary: " + (article.answer || article.description || "").replace(/\s+/g, " ").trim(),
   ].join("\n")).join("\n\n");
