@@ -4,7 +4,7 @@ import { ThemeProvider, themeBootScript } from "@/components/theme";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { SITE } from "@/lib/site";
-import { defaultShareImage, shareMeta } from "@/lib/seo";
+import { defaultShareImage, shareMeta, INDEXABLE_ROBOTS, SITE_KEYWORDS, orgJsonLd, websiteJsonLd } from "@/lib/seo";
 import { deploymentRobotsMeta } from "@/lib/public-host";
 import { NotFound } from "@/components/not-found";
 
@@ -15,18 +15,22 @@ export const Route = createRootRoute({
   // Session is resolved client-side via Better Auth useSession (AuthSlot).
   // A root beforeLoad that awaited getSession blocked every soft navigation.
   head: () => {
-    const robots = deploymentRobotsMeta();
+    const robots = deploymentRobotsMeta() || INDEXABLE_ROBOTS;
     return {
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: SITE.legalName },
       { name: "description", content: SITE.description },
+      { name: "publisher", content: SITE.legalName },
+      { name: "application-name", content: SITE.legalName },
+      { name: "keywords", content: SITE_KEYWORDS.join(", ") },
       { name: "theme-color", content: "#f4f1ea" },
       { name: "google-site-verification", content: "SANgNulrO0igNLnWomn54tf-G9uZr7EsL01oN56JWwo" },
       ...(robots ? [{ name: "robots", content: robots }] : []),
       ...shareMeta({ title: SITE.name, description: SITE.description, path: "/" }),
     ],
+    scripts: [orgJsonLd(), websiteJsonLd()].map(data => ({ type: "application/ld+json", children: JSON.stringify(data).replace(/</g, "\\u003c") })),
     links: [
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },

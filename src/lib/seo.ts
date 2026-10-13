@@ -1,6 +1,9 @@
 import { SITE } from "@/lib/site";
 import { deploymentRobotsMeta } from "@/lib/public-host";
 
+export const INDEXABLE_ROBOTS = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+export const SITE_KEYWORDS = ["business listing management", "local listing management", "local business listings"] as const;
+
 export const OG_IMAGE_PATH = "/og.png";
 export const OG_IMAGE_WIDTH = "1280";
 export const OG_IMAGE_HEIGHT = "640";
@@ -141,6 +144,7 @@ export function pageHead(opts: {
   canonical?: string;
   /** Optional robots directive, e.g. "noindex, follow" for auth/conversion shells. */
   robots?: string;
+  keywords?: ReadonlyArray<string>;
   /** Absolute HTTPS share image; defaults to site OG banner. */
   image?: string;
   imageWidth?: string;
@@ -158,13 +162,15 @@ export function pageHead(opts: {
     canonicalOverride ||
     (opts.path ? `${SITE.domain}${opts.path}` : "");
   const image = opts.image || defaultShareImage();
-  const robots = opts.robots || deploymentRobotsMeta();
+  const robots = deploymentRobotsMeta() || opts.robots || INDEXABLE_ROBOTS;
   const published = (opts.published || "").trim();
   const articleTimes = published ? articleDates(published, opts.modified) : null;
   return {
     meta: [
       { title: pageTitle(opts.title) },
       { name: "description", content: description },
+      { name: "publisher", content: SITE.legalName },
+      { name: "keywords", content: (opts.keywords || SITE_KEYWORDS).join(", ") },
       ...(robots ? [{ name: "robots", content: robots }] : []),
       ...shareMeta({
         ...opts,
@@ -180,6 +186,21 @@ export function pageHead(opts: {
           ]
         : []),
     ],
+    scripts: canonical && !robots.includes("noindex") && (!canonicalOverride || canonicalOverride === `${SITE.domain}${opts.path || ""}`) ? [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": `${canonical}#webpage`,
+        url: canonical,
+        name: pageTitle(opts.title),
+        description,
+        inLanguage: "en",
+        isPartOf: { "@id": `${SITE.domain}/#website` },
+        publisher: { "@id": `${SITE.domain}/#organization` },
+        ...(opts.path && opts.path !== "/" ? { breadcrumb: breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: pageTitle(opts.title), path: opts.path }]) } : {}),
+      }).replace(/</g, "\\u003c"),
+    }] : [],
     links: [
       { rel: "image_src", href: image },
       ...(canonical ? [{ rel: "canonical", href: canonical }] : []),
@@ -191,6 +212,7 @@ export function orgJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${SITE.domain}/#organization`,
     name: SITE.legalName,
     alternateName: SITE.name,
     url: SITE.domain,
@@ -225,6 +247,7 @@ export function websiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE.domain}/#website`,
     name: SITE.legalName,
     url: SITE.domain,
     description: SITE.oneLiner,
