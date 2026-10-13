@@ -1,6 +1,10 @@
 import { Link } from "@tanstack/react-router";
+import { JsonLd } from "@/components/json-ld";
+import { faqJsonLd } from "@/lib/seo";
 
 const faqs = [
+  { question: "Is this a free GMB audit tool?", answer: "Yes. OpsPulse is free to use and combines a manual GMB audit checklist with a listing ROI planner. You review your Google Business Profile yourself, then enter workload assumptions to estimate follow-up hours and costs. It does not scan live profiles, detect errors automatically, or generate a verified audit report." },
+  { question: "What should a GMB audit include?", answer: "A GMB audit reviews business identity, address or service area, phone number, website, categories, hours, profile access, and possible duplicate profiles. Record observed issues and check corrections against Google Business Profile guidelines. Use the checklist below for the manual review and the calculator above to plan correction workload." },
   { question: "What is business listing management ROI?", answer: "Business listing management ROI compares the measurable value of time and correction work reduced by a new operating process with the full cost of implementing and running that process. OpsPulse models potentially recoverable labor capacity only; it does not subtract software, migration, training, or verification expenses, so its output is not a net ROI percentage." },
   { question: "Does the calculator measure revenue from Google Business Profile rankings?", answer: "No. The calculator estimates publishing workload, rework, and exception-handling time using your assumptions. It does not connect to Google Business Profile, measure search rankings, count conversions, or attribute customer revenue to listings." },
   { question: "Can I use OpsPulse for a franchise or multi-location brand?", answer: "Yes. Enter the locations you operate, average monthly changes per location, number of publisher destinations touched, time per manual update, and fully loaded hourly cost. Franchise teams should distinguish corporate-approved fields from local edits and validate a sample of location-level tickets before presenting the result." },
@@ -10,23 +14,39 @@ const faqs = [
 
 export function OpsPulseExplainer() {
   return <div className="page-wrap pb-20 sm:pb-28">
+    <JsonLd data={faqJsonLd(faqs.map(item => ({ q: item.question, a: item.answer })))} />
     <section aria-labelledby="opspulse-definition" className="border-t border-line pt-12 sm:pt-16">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">A practical business case</p>
-      <h2 id="opspulse-definition" className="mt-4 max-w-4xl font-display text-4xl font-semibold tracking-tight sm:text-5xl">What is a business listing management ROI calculator?</h2>
-      <p className="mt-5 max-w-4xl text-lg leading-relaxed text-ink-soft">A business listing management ROI calculator estimates the staff time and operating cost involved in updating local business profiles across locations and publishing platforms. OpsPulse helps agencies, franchises, and multi-location operations teams compare today's manual workload with a hypothetical, more efficient process. It is a <strong>workload and labor-opportunity model</strong>, not an audit of live listings or proof of financial return.</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">From GMB audit findings to a business case</p>
+      <h2 id="opspulse-definition" className="mt-4 max-w-4xl font-display text-4xl font-semibold tracking-tight sm:text-5xl">How does this free GMB audit tool support ROI planning?</h2>
+      <p className="mt-5 max-w-4xl text-lg leading-relaxed text-ink-soft">This free GMB audit tool pairs manual Google Business Profile checks with a calculator for listing-maintenance hours and costs. GMB means Google My Business, now called Google Business Profile. Start with a manual GMB audit, record the changes and exceptions you find, then use OpsPulse to compare current workload with an efficiency scenario. It is a <strong>checklist and labor-planning model</strong>; it does not inspect live listings or verify audit findings.</p>
       <p className="mt-4 max-w-4xl text-base leading-relaxed text-ink-soft">Business listing operations include maintaining names, addresses, phone numbers (NAP), opening hours, location status, website URLs, categories, and other supported fields across Google Business Profile, Apple Business Connect, Bing Places, and relevant directories. Because every publisher can have its own requirements, a successful submission is not always the same as a verified live correction.</p>
       <div className="mt-8 grid gap-4 md:grid-cols-3">
         {[
-          { name: "For franchises", text: "Estimate what it costs to distribute approved corporate changes across branches and manage local exceptions." },
-          { name: "For agencies", text: "Scope client onboarding, recurring listing maintenance, correction tickets, and the manual hours within a service retainer." },
-          { name: "For multi-location teams", text: "Build a finance-ready baseline for location data governance, listing operations, and automation planning." },
+          { name: "For franchises", text: "Turn branch-level GMB audit findings into an estimate for approved corporate changes and local exceptions." },
+          { name: "For agencies", text: "Scope client GMB audit follow-up, onboarding, listing maintenance, and correction hours within a service retainer." },
+          { name: "For multi-location teams", text: "Use your GMB audit records to build a finance-ready baseline for listing operations and automation planning." },
         ].map(item => <div className="rounded-2xl border border-line bg-paper p-6" key={item.name}><h3 className="text-lg font-semibold">{item.name}</h3><p className="mt-3 text-sm leading-relaxed text-ink-soft">{item.text}</p></div>)}
       </div>
     </section>
 
+
+    <section aria-labelledby="opspulse-gmb-audit" className="mt-16">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">Manual profile review</p>
+      <h2 id="opspulse-gmb-audit" className="mt-4 font-display text-4xl font-semibold tracking-tight">GMB audit checklist: what to review before using the planner</h2>
+      <p className="mt-4 max-w-4xl leading-relaxed text-ink-soft">Open each Google Business Profile yourself and record the issue, location, responsible person, and correction time. This checklist guides your review; the free GMB audit tool does not fetch or validate profile data.</p>
+      <ol className="mt-6 list-decimal space-y-4 pl-5 leading-relaxed text-ink-soft">
+        <li><strong>Business identity and access.</strong> Check the real-world business name, profile ownership, verification status, and any possible duplicate profiles. Review special rules for practitioners and departments before treating a separate profile as a duplicate.</li>
+        <li><strong>Location and contact details.</strong> Compare the address or service area, map location, phone number, and website with the business's approved records. Check that links and phone numbers reach the correct location.</li>
+        <li><strong>Categories and opening hours.</strong> Review whether categories describe the actual business and whether regular and special hours are accurate where applicable.</li>
+        <li><strong>Correction workflow.</strong> Log each required edit, approval, rejected update, and verification task. Track when the change is visible on the public profile, not just when it was submitted.</li>
+      </ol>
+      <p className="mt-5 max-w-4xl text-sm leading-relaxed text-ink-soft">Then enter your observed change frequency, destinations touched, minutes per update, rework, and exceptions in the calculator. It models recurring listing-maintenance labor; time spent conducting the GMB audit itself and one-time cleanup should be budgeted separately.</p>
+      <a href="#calculator" className="mt-5 inline-block font-semibold text-brand underline underline-offset-4">Use your GMB audit findings in the ROI planner →</a>
+    </section>
+
     <section aria-labelledby="opspulse-formula" className="mt-16">
       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">Transparent methodology</p>
-      <h2 id="opspulse-formula" className="mt-4 font-display text-4xl font-semibold tracking-tight">How OpsPulse calculates listing management cost</h2>
+      <h2 id="opspulse-formula" className="mt-4 font-display text-4xl font-semibold tracking-tight">How OpsPulse models costs after a GMB audit</h2>
       <p className="mt-4 max-w-4xl leading-relaxed text-ink-soft">The live model uses eight adjustable numeric drivers plus the workflow type. Every result comes from your inputs; there are no industry-average savings claims hidden behind the score. Annual hours are calculated from monthly publishing work, modeled rework, and a fixed four-hour allowance for each exception.</p>
       <div className="mt-7 overflow-x-auto rounded-2xl border border-line">
         <table className="w-full min-w-[590px] text-left text-sm">
@@ -46,7 +66,7 @@ export function OpsPulseExplainer() {
     </section>
 
     <section aria-labelledby="opspulse-example" className="mt-16 grid gap-8 rounded-[2rem] border border-line bg-sand/35 p-6 sm:p-10 lg:grid-cols-[.95fr_1.05fr]">
-      <div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Worked example</p><h2 id="opspulse-example" className="mt-3 font-display text-4xl font-semibold">What does manual listings management cost for 40 locations?</h2><p className="mt-5 leading-relaxed text-ink-soft">Consider a hypothetical operator with 40 business locations, two field changes per location each month, six publishers, eight minutes per update, a $35 loaded hourly labor rate, 10% rework, and two exceptions each month.</p><p className="mt-4 leading-relaxed text-ink-soft">The model produces <strong>5,760 annual publisher touches</strong>, <strong>940.8 annual labor hours</strong>, and <strong>$32,928 in modeled annual labor cost</strong>. With a 60% touch-reduction assumption, the illustrative recoverable capacity is <strong>546.24 hours</strong> (about <strong>$19,118</strong> at that labor rate).</p></div>
+      <div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Worked example</p><h2 id="opspulse-example" className="mt-3 font-display text-4xl font-semibold">What could GMB audit follow-up cost across 40 locations?</h2><p className="mt-5 leading-relaxed text-ink-soft">After a manual GMB audit, consider a hypothetical operator with 40 business locations, two field changes per location each month, six publishers, eight minutes per update, a $35 loaded hourly labor rate, 10% rework, and two exceptions each month.</p><p className="mt-4 leading-relaxed text-ink-soft">The model produces <strong>5,760 annual publisher touches</strong>, <strong>940.8 annual labor hours</strong>, and <strong>$32,928 in modeled annual labor cost</strong>. With a 60% touch-reduction assumption, the illustrative recoverable capacity is <strong>546.24 hours</strong> (about <strong>$19,118</strong> at that labor rate).</p></div>
       <div className="rounded-2xl bg-cream p-6"><h3 className="text-xl font-semibold">Validate the baseline before making a decision</h3><ol className="mt-5 list-decimal space-y-3 pl-5 text-sm leading-relaxed text-ink-soft"><li>Export a representative month of location-change tickets. Separate routine edits from claims, verification, and rejections.</li><li>Time a sample of manual publisher updates and use your real fully loaded hourly cost.</li><li>Run three scenarios by changing touch reduction, rework, and exceptions rather than using one best-case estimate.</li><li>Add annual platform fees, onboarding, integrations, support, internal approvals, and migration costs outside OpsPulse.</li><li>Compare forecast hours with actual accepted-and-live updates after a pilot, then revisit the assumptions.</li></ol><p className="mt-5 border-t border-line pt-4 text-xs leading-relaxed text-muted">Illustrative example only. Labor value is not automatically cash returned to the business; it may instead represent capacity available for higher-value work.</p></div>
     </section>
 
@@ -57,14 +77,15 @@ export function OpsPulseExplainer() {
 
     <section aria-labelledby="opspulse-questions" className="mt-16">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">Frequently asked questions</p>
-      <h2 id="opspulse-questions" className="mt-3 font-display text-4xl font-semibold">Questions about listings cost and ROI</h2>
+      <h2 id="opspulse-questions" className="mt-3 font-display text-4xl font-semibold">Questions about the free GMB audit tool and ROI planning</h2>
       <div className="mt-6 grid gap-4 lg:grid-cols-2">{faqs.map(item=><article key={item.question} className="rounded-2xl border border-line bg-cream p-6"><h3 className="text-xl font-semibold">{item.question}</h3><p className="mt-3 text-sm leading-relaxed text-ink-soft">{item.answer}</p></article>)}</div>
     </section>
 
     <section aria-labelledby="opspulse-sources" className="mt-16 rounded-2xl border border-line bg-paper p-6 sm:p-8">
-      <h2 id="opspulse-sources" className="font-display text-3xl font-semibold">Source notes and next steps</h2>
-      <p className="mt-3 max-w-4xl text-sm leading-relaxed text-ink-soft">OpsPulse calculations are a clearly labeled editorial model. For publisher-specific instructions, use primary documentation rather than assumptions about universal sync or guaranteed rankings.</p>
+      <h2 id="opspulse-sources" className="font-display text-3xl font-semibold">GMB audit sources and next steps</h2>
+      <p className="mt-3 max-w-4xl text-sm leading-relaxed text-ink-soft">Validate GMB audit corrections against primary Google documentation. OpsPulse calculations are a clearly labeled editorial model; they do not certify profile accuracy or predict rankings.</p>
       <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-soft">
+        <li><a className="underline underline-offset-4" href="https://support.google.com/business/answer/3038177?hl=en" rel="noopener noreferrer" target="_blank">Google Business Profile Help: guidelines for representing your business</a> — reference for the manual GMB audit checklist.</li>
         <li><a className="underline underline-offset-4" href="https://support.google.com/business/answer/3370250?hl=en" rel="noopener noreferrer" target="_blank">Google Business Profile Help: create a bulk upload spreadsheet</a> — how multi-location imports and required profile fields work.</li>
         <li><a className="underline underline-offset-4" href="https://support.google.com/business/answer/7091?hl=en" rel="noopener noreferrer" target="_blank">Google Business Profile Help: local ranking factors</a> — why cost reduction cannot be interpreted as a ranking guarantee.</li>
         <li><Link className="underline underline-offset-4" to="/resources">Browse our listing-management resources</Link> for related operating guidance.</li>

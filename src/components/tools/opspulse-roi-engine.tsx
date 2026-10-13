@@ -53,9 +53,9 @@ export function OpsPulseRoiEngine() {
       <section className="grid overflow-hidden rounded-[2rem] border border-line bg-cream shadow-[var(--shadow-soft)] lg:grid-cols-[0.78fr_1.22fr]">
         <div className="border-b border-line bg-sand/45 p-5 sm:p-8 lg:border-b-0 lg:border-r">
           <div className="border-b border-line pb-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">01 · Operating inputs</p>
-            <h2 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">Model the work behind every update.</h2>
-            <p className="mt-3 text-sm leading-relaxed text-ink-soft">Nothing is uploaded or stored. Change any assumption and the business case recalculates instantly.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">01 · GMB audit planning inputs</p>
+            <h2 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">Model the work after your GMB audit.</h2>
+            <p className="mt-3 text-sm leading-relaxed text-ink-soft">Enter workload assumptions from your GMB audit and listing-maintenance records. Nothing is uploaded or stored; the cost model recalculates instantly.</p>
           </div>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
             <NumberField label="Locations" value={locations} min={1} max={5000} onChange={numericInput(setLocations, 1, 5000)} />
@@ -99,7 +99,7 @@ export function OpsPulseRoiEngine() {
       </section>
 
       <section className="grid gap-7 rounded-[2rem] bg-ink p-5 text-cream sm:p-8 lg:grid-cols-[0.55fr_1fr]">
-        <div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-soft">03 · Control plan</p><h2 className="mt-3 font-display text-4xl font-semibold text-white sm:text-5xl">Convert cost into operating priorities.</h2><p className="mt-4 text-[15px] leading-relaxed text-white/65">The priority stack ranks structural risk before software. Fix the workflow that creates bad data, then reduce repetitive publishing.</p><ButtonLink /></div>
+        <div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-soft">03 · GMB audit follow-up plan</p><h2 className="mt-3 font-display text-4xl font-semibold text-white sm:text-5xl">Turn GMB audit findings into priorities.</h2><p className="mt-4 text-[15px] leading-relaxed text-white/65">The priority stack ranks structural risk before software. Fix the workflow that creates bad data, then reduce repetitive publishing.</p><ButtonLink /></div>
         <ol className="divide-y divide-white/15 border-y border-white/15">{result.priorities.map((item, index) => <li className="grid grid-cols-[2.5rem_1fr] gap-4 py-5" key={item.title}><span className="font-mono text-sm text-brand-soft">{String(index + 1).padStart(2, "0")}</span><div><h3 className="text-lg font-semibold text-white">{item.title}</h3><p className="mt-2 text-sm leading-relaxed text-white/65">{item.text}</p></div></li>)}</ol>
       </section>
 
