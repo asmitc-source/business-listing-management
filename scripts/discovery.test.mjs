@@ -6,7 +6,7 @@ const source = fs.readFileSync("src/lib/discovery.ts", "utf8");
 const indexRoute = fs.readFileSync("src/routes/llms[.]txt.ts", "utf8");
 const corpusRoute = fs.readFileSync("src/routes/llms-full[.]txt.ts", "utf8");
 const feedRoute = fs.readFileSync("src/routes/rss[.]xml.ts", "utf8");
-const mirrorRoute = fs.readFileSync("src/routes/blog/$slug[.]md.ts", "utf8");
+const mirrorRoute = fs.readFileSync("src/routes/md/$slug.ts", "utf8");
 const cmsSource = fs.readFileSync("src/lib/discovery-server.ts", "utf8");
 const sitemap = fs.readFileSync("src/lib/sitemap.ts", "utf8");
 
