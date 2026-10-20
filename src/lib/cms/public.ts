@@ -7,6 +7,7 @@ import { ensureImageAlts, imagesMissingAlt } from "./gdoc";
 import { repairArticleHtml } from "@/lib/content/repair-article-html";
 import { isSocialUnfurlBot } from "@/lib/seo-bots";
 import type { CmsArticle, SiteCopy } from "./types";
+import { selectHomeCards } from "./home";
 
 function ensureArticleDescription(article: CmsArticle): CmsArticle {
   const description = (
@@ -110,7 +111,7 @@ async function refreshPublicSite(): Promise<PublicSitePayload> {
   }
 }
 
-export const loadPublicSite = createServerFn({ method: "GET" }).handler(async () => {
+async function readPublicSite() {
   const now = Date.now();
   if (publicSiteCache && now - publicSiteCache.at < PUBLIC_SITE_TTL_MS) {
     return publicSiteCache.data;
@@ -120,6 +121,18 @@ export const loadPublicSite = createServerFn({ method: "GET" }).handler(async ()
     return publicSiteCache.data;
   }
   return refreshPublicSite();
+}
+
+export const loadPublicSite = createServerFn({ method: "GET" }).handler(async () => readPublicSite());
+
+export const loadHomePage = createServerFn({ method: "GET" }).handler(async () => {
+  const data = await readPublicSite();
+  return {
+    lede: data.copy.home.lede,
+    trialLine: data.copy.home.trialLine,
+    faqs: data.faqs,
+    cards: selectHomeCards(data.articles, BLOG_POSTS),
+  };
 });
 
 export const loadPublicArticle = createServerFn({ method: "GET" })

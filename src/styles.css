@@ -1,5 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@fontsource-variable/newsreader/standard.css";
+@import "@fontsource-variable/newsreader/standard-italic.css";
+@import "@fontsource-variable/plus-jakarta-sans/index.css";
+@import "@fontsource-variable/plus-jakarta-sans/wght-italic.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -76,8 +80,8 @@
 }
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Newsreader Variable", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
 
   --color-paper: var(--paper);
   --color-cream: var(--cream);

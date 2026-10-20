@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Bell, Check, GitMerge, Shield, Upload } from "lucide-react";
 import { useScrollSpy } from "@/components/home/scroll";
+import { observeViewportScroll } from "./visible-scroll";
 import { AppleMark, BingMark, GoogleMark, MapQuestMark } from "@/components/brand-marks";
 import { WORKFLOW } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -14,12 +15,11 @@ export function Workflow({ showHeader = true }: { showHeader?: boolean }) {
   const [active] = useScrollSpy(stepRefs, 0.38);
 
   useEffect(() => {
-    let raf = 0;
     const layout = () => {
       const root = rootRef.current;
       const from = stepRefs.current[active];
       const to = mockRef.current;
-      if (!root || !from || !to) {
+      if (!root || !from || !to || window.innerWidth < 1024) {
         setDot((d) => (d.on ? { ...d, on: false } : d));
         return;
       }
@@ -37,23 +37,10 @@ export function Workflow({ showHeader = true }: { showHeader?: boolean }) {
       const y2 = tb.top + 48 - rb.top;
       const mid = x1 + (x2 - x1) * 0.55;
       setPath(`M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`);
-      setDot({ x: x2, y: y2, on: true });
+      setDot((d) => d.on && d.x === x2 && d.y === y2 ? d : { x: x2, y: y2, on: true });
     };
-    const onScroll = () => {
-      if (raf) return;
-      raf = window.requestAnimationFrame(() => {
-        raf = 0;
-        layout();
-      });
-    };
-    layout();
-    window.addEventListener("resize", onScroll);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      if (raf) window.cancelAnimationFrame(raf);
-      window.removeEventListener("resize", onScroll);
-      window.removeEventListener("scroll", onScroll);
-    };
+    const root = rootRef.current;
+    if (root) return observeViewportScroll(root, layout);
   }, [active]);
 
   return (

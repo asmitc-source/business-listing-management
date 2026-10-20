@@ -1,4 +1,5 @@
 import { useEffect, useState, type MutableRefObject } from "react";
+import { observeViewportScroll } from "./visible-scroll";
 
 export function usePinnedProgress(ref: MutableRefObject<HTMLElement | null>) {
   const [progress, setProgress] = useState(0);
@@ -12,7 +13,6 @@ export function usePinnedProgress(ref: MutableRefObject<HTMLElement | null>) {
       return;
     }
 
-    let raf = 0;
     let last = -1;
     const update = () => {
       const node = ref.current;
@@ -29,22 +29,7 @@ export function usePinnedProgress(ref: MutableRefObject<HTMLElement | null>) {
       setProgress(clamped);
     };
 
-    const onScroll = () => {
-      if (raf) return;
-      raf = window.requestAnimationFrame(() => {
-        raf = 0;
-        update();
-      });
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      if (raf) window.cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
+    return observeViewportScroll(el, update);
   }, [ref]);
 
   return progress;
@@ -67,7 +52,6 @@ export function usePinnedPhase(
       return;
     }
 
-    let raf = 0;
     const update = () => {
       const node = ref.current;
       if (!node) return;
@@ -85,22 +69,7 @@ export function usePinnedPhase(
       setPhase((cur) => (cur === next ? cur : next));
     };
 
-    const onScroll = () => {
-      if (raf) return;
-      raf = window.requestAnimationFrame(() => {
-        raf = 0;
-        update();
-      });
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      if (raf) window.cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
+    return observeViewportScroll(el, update);
   }, [ref, cuts]);
 
   return phase;

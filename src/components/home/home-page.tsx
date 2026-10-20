@@ -16,16 +16,14 @@ import {
 } from "@/components/brand-marks";
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/json-ld";
-import { BLOG_POSTS } from "@/lib/content/blog";
-import { toCard } from "@/lib/cms/public";
-import type { CmsArticle } from "@/lib/cms/types";
+import type { HomeCard } from "@/lib/cms/home";
 import { ASK_PROMPT, AUDIENCES, COVERAGE, FAQ, INDUSTRIES, SITE, WHY } from "@/lib/site";
 import { definedTermJsonLd, faqJsonLd, orgJsonLd, softwareJsonLd, websiteJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 const ask = encodeURIComponent(ASK_PROMPT);
 
-type HomeCopy = { lede: string; trialLine: string; faqs: { q: string; a: string }[]; articles?: CmsArticle[] };
+type HomeCopy = { lede: string; trialLine: string; faqs: { q: string; a: string }[]; cards: HomeCard[] };
 const CopyCtx = createContext<HomeCopy | null>(null);
 
 export function HomePage({ copy }: { copy?: HomeCopy }) {
@@ -72,7 +70,7 @@ function Hero() {
     <section className="relative">
       <div className="page-wrap pb-12 pt-16 sm:pt-20 lg:pb-16 lg:pt-24">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="animate-fade-up mx-auto font-display text-[2.2rem] font-semibold leading-[1.12] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem] lg:leading-[1.12] [text-wrap:unset]">
+          <h1 className="mx-auto font-display text-[2.2rem] font-semibold leading-[1.12] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem] lg:leading-[1.12] [text-wrap:unset]">
             <span className="block">Keep every location </span>
             <span className="mt-1 block">
               <RotateWord />
@@ -81,15 +79,13 @@ function Hero() {
           </h1>
           <p
             id="home-hero-description"
-            className="animate-fade-up mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-soft"
-            style={{ animationDelay: "90ms" }}
+            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-soft"
           >
             {copy?.lede ??
               `Business listing management without the spreadsheet: unify NAP, close duplicates, and keep ${COVERAGE} in lockstep from one BLM workspace.`}
           </p>
           <div
-            className="animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-3"
-            style={{ animationDelay: "160ms" }}
+            className="mt-8 flex flex-wrap items-center justify-center gap-3"
           >
             <Button asChild size="lg">
               <Link to="/trial">Start free trial</Link>
@@ -100,8 +96,7 @@ function Hero() {
           </div>
           <Link
             to="/book"
-            className="group animate-fade-up mt-3 inline-flex cursor-pointer items-center gap-1 text-sm font-semibold text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline"
-            style={{ animationDelay: "280ms" }}
+            className="group mt-3 inline-flex cursor-pointer items-center gap-1 text-sm font-semibold text-ink-soft underline-offset-2 transition-colors hover:text-ink hover:underline focus-visible:text-ink focus-visible:underline"
           >
             Or book a call about your listings{" "}
             <ArrowRight className="size-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
@@ -122,8 +117,7 @@ function AskRow() {
   ];
   return (
     <div
-      className="animate-fade-up mt-8 flex flex-wrap justify-center gap-2"
-      style={{ animationDelay: "340ms" }}
+      className="mt-8 flex flex-wrap justify-center gap-2"
     >
       {links.map((l) => (
         <a
@@ -456,23 +450,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 function Resources() {
   const copy = useContext(CopyCtx);
-  const cms = (copy?.articles ?? [])
-    .filter((a) => a.status === "published" && a.kind === "article")
-    .slice()
-    .sort((a, b) => {
-      const byDate = b.date.localeCompare(a.date);
-      if (byDate) return byDate;
-      return (b.updated_at || "").localeCompare(a.updated_at || "");
-    });
-  // Prefer CMS rows, then fill with static library posts missing from CMS (new cluster articles).
-  const cmsCards = cms.map(toCard);
-  const have = new Set(cmsCards.map((c) => c.slug));
-  const staticExtra = BLOG_POSTS.filter((p) => !have.has(p.slug)).map(toCard);
-  const cards = [...cmsCards, ...staticExtra]
-    .sort((a, b) => b.date.localeCompare(a.date))
-    .slice(0, 6);
-
-
+  const cards = copy?.cards ?? [];
   return (
     <section className="page-wrap py-16 sm:py-24" aria-labelledby="resources-title">
       <Reveal className="flex items-end justify-between gap-4">
