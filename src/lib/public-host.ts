@@ -79,8 +79,8 @@ export function robotsTxtForHost(host: string | null | undefined): string {
  * redirected at the domain layer.
  */
 export function deploymentRobotsMeta(): string | undefined {
-  if (typeof process === "undefined") return undefined;
-  const env = process.env.VERCEL_ENV;
+  const env = import.meta.env?.VITE_DEPLOYMENT_ENV ||
+    (typeof process !== "undefined" ? process.env.VERCEL_ENV : undefined);
   if (env === "preview" || env === "development") return "noindex, nofollow";
   return undefined;
 }

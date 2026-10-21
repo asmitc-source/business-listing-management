@@ -144,6 +144,11 @@ function authPopupPlugin(): Plugin {
 // The dev server starts once `src/router.tsx` and `src/routes/` exist — see
 // AGENTS.md § "First scaffold".
 export default defineConfig(({ command, isPreview }) => ({
+  // Keep robots metadata identical during server rendering and hydration.
+  // This public build environment is safe to embed in both bundles.
+  define: {
+    "import.meta.env.VITE_DEPLOYMENT_ENV": JSON.stringify(process.env.VERCEL_ENV || ""),
+  },
   server: {
     host: "0.0.0.0",
     port: 8080,
