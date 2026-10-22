@@ -43,8 +43,11 @@ export const Route = createRootRoute({
       { rel: "alternate", type: "text/plain", title: "BLM machine-readable article index", href: "/llms.txt" },
       { rel: "image_src", href: defaultShareImage() },
       { rel: "stylesheet", href: appCss },
-      ...[displayFont, displayItalicFont, bodyFont].map((href) => ({
+      // Prioritize the body face used by the LCP paragraph on narrow screens.
+      // Large display faces must not compete with it on a slow connection.
+      ...[bodyFont, displayFont, displayItalicFont].map((href) => ({
         rel: "preload", as: "font", type: "font/woff2", crossOrigin: "anonymous" as const, href,
+        fetchPriority: href === bodyFont ? "high" as const : "low" as const,
       })),
     ],
   };
