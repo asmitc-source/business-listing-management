@@ -3,8 +3,6 @@ import { AuthProvider } from "@/lib/auth/provider";
 import { ThemeProvider, themeBootScript } from "@/components/theme";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
-import displayFont from "@fontsource-variable/newsreader/files/newsreader-latin-standard-normal.woff2?url";
-import displayItalicFont from "@fontsource-variable/newsreader/files/newsreader-latin-standard-italic.woff2?url";
 import bodyFont from "@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url";
 import { SITE } from "@/lib/site";
 import { defaultShareImage, shareMeta, INDEXABLE_ROBOTS, SITE_KEYWORDS, orgJsonLd, websiteJsonLd } from "@/lib/seo";
@@ -43,12 +41,7 @@ export const Route = createRootRoute({
       { rel: "alternate", type: "text/plain", title: "BLM machine-readable article index", href: "/llms.txt" },
       { rel: "image_src", href: defaultShareImage() },
       { rel: "stylesheet", href: appCss },
-      // Prioritize the body face used by the LCP paragraph on narrow screens.
-      // Large display faces must not compete with it on a slow connection.
-      ...[bodyFont, displayFont, displayItalicFont].map((href) => ({
-        rel: "preload", as: "font", type: "font/woff2", crossOrigin: "anonymous" as const, href,
-        fetchPriority: href === bodyFont ? "high" as const : "low" as const,
-      })),
+      { rel: "preload", as: "font", type: "font/woff2", crossOrigin: "anonymous", href: bodyFont, fetchPriority: "high" },
     ],
   };
   },

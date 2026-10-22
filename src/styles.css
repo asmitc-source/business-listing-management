@@ -5,6 +5,23 @@
 @import "@fontsource-variable/plus-jakarta-sans/index.css";
 @import "@fontsource-variable/plus-jakarta-sans/wght-italic.css";
 
+/* Exact Newsreader 600 outlines, retaining the optical-size axis. Only the
+   fixed homepage heading alphabet is downloaded on the critical path. */
+@font-face {
+  font-family: "BLM Newsreader Hero";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("./assets/fonts/newsreader-hero-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "BLM Newsreader Hero";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url("./assets/fonts/newsreader-hero-600-italic.woff2") format("woff2");
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
@@ -183,6 +200,10 @@
 .font-display {
   font-family: var(--font-display);
   font-optical-sizing: auto;
+}
+
+.home-hero-title {
+  font-family: "BLM Newsreader Hero", var(--font-display);
 }
 
 .hairline {

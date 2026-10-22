@@ -70,7 +70,7 @@ function Hero() {
     <section className="relative">
       <div className="page-wrap pb-12 pt-16 sm:pt-20 lg:pb-16 lg:pt-24">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="mx-auto font-display text-[2.2rem] font-semibold leading-[1.12] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem] lg:leading-[1.12] [text-wrap:unset]">
+          <h1 className="home-hero-title mx-auto font-display text-[2.2rem] font-semibold leading-[1.12] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem] lg:leading-[1.12] [text-wrap:unset]">
             <span className="block">Keep every location </span>
             <span className="mt-1 block">
               <RotateWord />

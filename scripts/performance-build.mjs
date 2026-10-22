@@ -15,4 +15,7 @@ for (const prefix of ["newsreader-latin-standard-normal-", "newsreader-latin-sta
   assert.ok(file, "Missing self-hosted font: " + prefix);
   assert.ok(statSync(dir + "/" + file).size > 1000);
 }
+const heroFonts = files.filter(p => /^newsreader-hero-600-.*\.woff2$/.test(p));
+assert.equal(heroFonts.length, 2, "Both homepage heading subsets must be bundled");
+for (const file of heroFonts) assert.ok(statSync(dir + "/" + file).size < 25_000, "Hero font exceeded 25 KB budget");
 console.log("Performance build checks passed: CSS budget and self-hosted font assets.");
