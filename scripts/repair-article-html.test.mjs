@@ -27,3 +27,14 @@ test("generic estuary img falls back to alt text", () => {
   assert.equal(/chatgpt\.com/.test(out), false);
   assert.match(out, /Diagram of sync/);
 });
+
+test("unwraps Google Docs redirects while retaining the original destination", () => {
+  const html = '<a href="https://www.google.com/url?q=https://synup.com/pricing?utm_source%3Ddocs&amp;sa=D&amp;source=editors">Synup</a>';
+  const out=repairArticleHtml(html);
+  assert.match(out,/href="https:\/\/synup.com\/pricing\?utm_source=docs"/);
+  assert.doesNotMatch(out,/google.com\/url/);
+});
+test("does not rewrite normal Google destinations or unsafe schemes", () => {
+  assert.match(repairArticleHtml('<a href="https://support.google.com/business">Help</a>'), /support.google.com/);
+  assert.match(repairArticleHtml('<a href="https://www.google.com/url?q=javascript%3Aalert%281%29">Bad</a>'), /google.com\/url/);
+});
