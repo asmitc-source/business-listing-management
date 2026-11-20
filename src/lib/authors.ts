@@ -30,6 +30,20 @@ export const AUTHORS = {
     imageAlt: "Asmit Choudhary",
     initials: "AC",
   },
+  nancy: {
+    name: "Nancy",
+    slug: "nancy",
+    bio: "Nancy writes practical comparisons and guidance for teams managing business listings, local visibility, and review workflows.",
+    imageAlt: "Nancy",
+    initials: "N",
+  },
+  mehak: {
+    name: "Mehak",
+    slug: "mehak",
+    bio: "Mehak contributes editorial analysis on business listings, multi-location operations, and local visibility.",
+    imageAlt: "Mehak",
+    initials: "M",
+  },
   sandeep: {
     name: "Sandeep Kumar",
     slug: "sandeep-kumar",
@@ -50,6 +64,8 @@ const ALIASES: Record<string, keyof typeof AUTHORS> = {
   editorial: "editorial",
   "sandeep kumar": "sandeep",
   sandeep: "sandeep",
+  nancy: "nancy",
+  mehak: "mehak",
 };
 
 export function resolveAuthor(authorName: string | null | undefined): AuthorProfile {
