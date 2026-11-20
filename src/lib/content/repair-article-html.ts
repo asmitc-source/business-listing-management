@@ -41,5 +41,28 @@ export function repairEstuaryImages(html: string) {
 }
 
 export function repairArticleHtml(html: string) {
-  return repairEstuaryImages(html);
+  return repairGoogleRedirectLinks(repairEstuaryImages(html));
+}
+
+/**
+ * Google Docs export decorates external links with google.com/url?q=…
+ * Restore the actual destination at both import and public render time.
+ * Only recognized Google redirect hosts and http(s) destinations are unwrapped.
+ */
+export function repairGoogleRedirectLinks(html: string): string {
+  if (!html || !/google\.[a-z.]+\/url\?/i.test(html)) return html;
+  return html.replace(/(\bhref\s*=\s*)(["'])(.*?)\2/gi, (whole, prefix: string, quote: string, value: string) => {
+    const decoded = value.replace(/&amp;/gi, "&").replace(/&#38;|&#x26;/gi, "&");
+    let wrapper: URL;
+    try { wrapper = new URL(decoded); } catch { return whole; }
+    if (!/^https?:$/.test(wrapper.protocol) || !/^(?:www\.)?google\.[a-z.]+$/i.test(wrapper.hostname) || wrapper.pathname !== "/url") return whole;
+    const target = wrapper.searchParams.get("q") || wrapper.searchParams.get("url");
+    if (!target) return whole;
+    let direct: URL;
+    try { direct = new URL(target); } catch { return whole; }
+    if (!/^https?:$/.test(direct.protocol)) return whole;
+    // Keep the actual destination URL, with safe HTML-escaped query separators.
+    const safe = direct.href.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    return prefix + quote + safe + quote;
+  });
 }
