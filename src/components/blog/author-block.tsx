@@ -1,4 +1,5 @@
 import type { AuthorProfile } from "@/lib/authors";
+import { Link } from "@tanstack/react-router";
 
 function LinkedInIcon({ className }: { className?: string }) {
   return (
@@ -51,7 +52,7 @@ export function AuthorBlock({ author }: { author: AuthorProfile }) {
             id={`author-block-${author.slug}`}
             className="mt-1.5 font-display text-2xl font-semibold tracking-tight text-ink sm:text-[1.7rem]"
           >
-            {author.name}
+            <Link to="/authors/$slug" params={{ slug: author.slug }} className="hover:text-brand hover:underline underline-offset-4">{author.name}</Link>
           </h2>
           <p className="mt-3 text-[15px] leading-relaxed text-ink-soft sm:text-base">{author.bio}</p>
           {author.linkedinUrl ? (
