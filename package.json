@@ -20,7 +20,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "check:performance": "node --test scripts/performance.test.mjs",
-    "prebuild": "npm run check:performance",
+    "prebuild": "npm run check:performance && node --experimental-strip-types --test scripts/repair-article-html.test.mjs",
     "postbuild": "node scripts/performance-build.mjs"
   },
   "dependencies": {
