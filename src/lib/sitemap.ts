@@ -14,6 +14,12 @@ export const MARKETING_PATHS: ReadonlyArray<{ path: string; lastmod?: string }> 
   { path: "/book", lastmod: "2026-09-23" },
   { path: "/resources", lastmod: "2026-09-23" },
   { path: "/blog", lastmod: "2026-09-23" },
+  // Canonical, crawlable editorial profiles linked from article bylines.
+  { path: "/authors/nancy" },
+  { path: "/authors/mehak" },
+  { path: "/authors/asmit-choudhary" },
+  { path: "/authors/sandeep-kumar" },
+  { path: "/authors/blm-editorial" },
   { path: "/glossary", lastmod: "2026-09-23" },
   { path: "/tools/listing-ops-roi-engine", lastmod: "2026-10-13" },
   { path: "/privacy", lastmod: "2026-09-23" },
