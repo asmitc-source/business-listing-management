@@ -344,7 +344,7 @@ export const cmsSaveArticle = createServerFn({ method: "POST" })
       meta_title,
       canonical_url,
       body_html,
-      author: str(o.author).trim() || SITE.editorial,
+      author: str(o.author).trim() || "Nancy",
       tags,
       category,
       kind,
