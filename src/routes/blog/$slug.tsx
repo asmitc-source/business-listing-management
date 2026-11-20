@@ -1,4 +1,4 @@
-import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Markdown } from "@/components/markdown";
 import { ArticleHtml } from "@/components/article-html";
@@ -114,7 +114,7 @@ function BlogPostPage() {
           {article.title}
         </h1>
         <p className="mt-4 text-sm text-faint">
-          {article.author} · {article.date} · {article.minutes} min read
+          <Link to="/authors/$slug" params={{ slug: author.slug }} className="font-medium text-ink hover:underline underline-offset-4">{author.name}</Link> · {article.date} · {article.minutes} min read
         </p>
         {answer ? (
           <aside className="mt-8 rounded-2xl bg-cream px-5 py-4 hairline sm:px-6">
