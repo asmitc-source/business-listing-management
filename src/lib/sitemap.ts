@@ -51,9 +51,20 @@ function escapeXml(value: string): string {
     .replaceAll("'", "&apos;");
 }
 
-function dateOnly(value: string | undefined, fallback: string): string {
-  const candidate = String(value || fallback).slice(0, 10);
-  return /^\d{4}-\d{2}-\d{2}$/.test(candidate) ? candidate : fallback;
+function dateOnly(value?: string): string | undefined {
+  const candidate = String(value ?? "").slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(candidate)) return undefined;
+  const parsed = Date.parse(candidate + "T00:00:00.000Z");
+  return Number.isFinite(parsed) && new Date(parsed).toISOString().slice(0, 10) === candidate
+    ? candidate
+    : undefined;
+}
+
+/** A newly published or substantially updated article should keep its real latest date. */
+function articleLastmod(article: SitemapArticle): string | undefined {
+  const published = dateOnly(article.date);
+  const updated = dateOnly(article.updated_at);
+  return updated && (!published || updated > published) ? updated : published;
 }
 
 export function sitemapXml(opts: {
@@ -63,13 +74,12 @@ export function sitemapXml(opts: {
   today?: string;
 }): string {
   const origin = (opts.origin || PRODUCTION_ORIGIN).replace(/\/+$/, "");
-  const today = opts.today || new Date().toISOString().slice(0, 10);
-  const urls: { loc: string; lastmod: string }[] = [];
+  const urls: { loc: string; lastmod?: string; article: boolean }[] = [];
   const seen = new Set<string>();
-  const add = (loc: string, lastmod: string) => {
+  const add = (loc: string, lastmod: string | undefined, article = false) => {
     if (seen.has(loc)) return;
     seen.add(loc);
-    urls.push({ loc, lastmod });
+    urls.push({ loc, lastmod, article });
   };
 
   // URLs must come from actually published records; do not invent placeholder articles.
@@ -79,13 +89,16 @@ export function sitemapXml(opts: {
   // make static fallback rows claim that the homepage and hubs changed today.
   const newestPublishedLastmod = opts.articles
     .filter(isSitemapArticle)
-    .map((article) => dateOnly(article.updated_at || article.date, today))
+    .map(articleLastmod)
+    .filter((date): date is string => Boolean(date))
     .reduce<string | undefined>((newest, lastmod) => (!newest || lastmod > newest ? lastmod : newest), undefined);
 
   for (const row of opts.marketing ?? MARKETING_PATHS) {
-    const staticLastmod = dateOnly(row.lastmod, today);
+    const staticLastmod = dateOnly(row.lastmod);
     const lastmod =
-      ARTICLE_DRIVEN_MARKETING_PATHS.has(row.path) && newestPublishedLastmod && newestPublishedLastmod > staticLastmod
+      ARTICLE_DRIVEN_MARKETING_PATHS.has(row.path) &&
+      newestPublishedLastmod &&
+      (!staticLastmod || newestPublishedLastmod > staticLastmod)
         ? newestPublishedLastmod
         : staticLastmod;
     add(`${origin}${row.path}`, lastmod);
@@ -94,11 +107,20 @@ export function sitemapXml(opts: {
   for (const article of articles) {
     if (!isSitemapArticle(article)) continue;
     const path = publicPathForKind(article.kind, article.slug);
-    add(`${origin}${path}`, dateOnly(article.updated_at || article.date, today));
+    add(`${origin}${path}`, articleLastmod(article), true);
   }
 
+  // Fresh articles first, then updated hubs and older pages. Stable URL ties avoid shuffled XML.
+  urls.sort((a, b) =>
+    (b.lastmod ?? "").localeCompare(a.lastmod ?? "") ||
+    Number(b.article) - Number(a.article) ||
+    a.loc.localeCompare(b.loc),
+  );
+
   const body = urls
-    .map((u) => `  <url><loc>${escapeXml(u.loc)}</loc><lastmod>${escapeXml(u.lastmod)}</lastmod></url>`)
+    .map((u) =>
+      `  <url><loc>${escapeXml(u.loc)}</loc>${u.lastmod ? `<lastmod>${escapeXml(u.lastmod)}</lastmod>` : ""}</url>`,
+    )
     .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
