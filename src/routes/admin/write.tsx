@@ -81,7 +81,7 @@ function WritePage() {
     meta_title: "",
     canonical_url: "",
     body_html: "",
-    author: "BLM Editorial",
+    author: "Nancy",
     tags: "",
     category: "",
     kind: "article",
@@ -476,7 +476,8 @@ function WritePage() {
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
             <Label htmlFor="author">Author</Label>
-            <Input id="author" value={form.author} onChange={(e) => patch({ author: e.target.value })} className="mt-1.5" />
+            <Input id="author" list="blm-author-options" value={form.author} onChange={(e) => patch({ author: e.target.value })} className="mt-1.5" />
+            <datalist id="blm-author-options"><option value="Nancy" /><option value="Mehak" /></datalist>
           </div>
           <div>
             <Label htmlFor="category">Topic / category</Label>
