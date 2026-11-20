@@ -188,7 +188,8 @@ export const loadPublicArticle = createServerFn({ method: "GET" })
         // Opportunistic persist: production has SUPABASE_SECRET_KEY; publishable key cannot write.
         const needsPersist =
           imagesMissingAlt(cms.body_html).length > 0 ||
-          /chatgpt\.com\/backend-api\/estuary/i.test(cms.body_html);
+          /chatgpt\.com\/backend-api\/estuary/i.test(cms.body_html) ||
+          /google\.[a-z.]+\/url\?/i.test(cms.body_html);
         if (needsPersist) {
           void (async () => {
             try {
